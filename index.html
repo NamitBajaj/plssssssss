@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>I'm sorry 🍿</title>
+<style>
+:root{--bg:#fff4f1;--card:#fff;--ink:#3a2326;--soft:#7a5a5e;--accent:#d6455d;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1114;--card:#2a1a1e;--ink:#fbe9ea;--soft:#c9a3a8;--accent:#ff6f86}}
+:root[data-theme="dark"]{--bg:#1d1114;--card:#2a1a1e;--ink:#fbe9ea;--soft:#c9a3a8;--accent:#ff6f86}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman',serif;display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden}
+.card{background:var(--card);max-width:440px;width:100%;border-radius:20px;padding:32px 26px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.12)}
+.hide{display:none}
+h1{margin:0 0 6px;font-size:2rem}
+.sub{color:var(--soft);margin:0 0 22px;font-style:italic}
+p{line-height:1.6;margin:0 0 18px}
+.emoji{font-size:3.4rem;margin:6px 0 16px;transition:transform .15s}
+.emoji.cry{transform:scale(1.25)}
+.row{display:flex;gap:12px;justify-content:center;align-items:center;min-height:56px}
+.btn{display:inline-block;border:0;cursor:pointer;background:var(--accent);color:#fff;text-decoration:none;padding:14px 24px;border-radius:999px;font:600 1rem system-ui,sans-serif}
+.btn.no{background:transparent;color:var(--soft);border:2px solid var(--soft);transition:left .12s,top .12s}
+.ticket{border:2px dashed var(--accent);border-radius:14px;padding:14px;margin:22px 0}
+.ticket b{display:block;font-size:1.15rem}
+.ticket span{color:var(--soft);font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="card" id="p1">
+<div class="emoji" id="em">🥺</div>
+<h1>I'm sorry 💛</h1>
+<p class="sub">for disappearing on you</p>
+<p>You set up the watch party all by yourself, and then you were left waiting. That wasn't fair, and I hear you. I'm really sorry.</p>
+<div class="row">
+<button class="btn" id="yes">Pls forgive me 🥹</button>
+<button class="btn no" id="no">I don't</button>
+</div>
+</div>
+
+<div class="card hide" id="p2">
+<h1>Yay, thank you 🥰</h1>
+<p class="sub">I'll show up properly this time</p>
+<div class="ticket"><b>🍿 It Ends With Us</b><span>Movie night · your seat is saved · I'm not going anywhere</span></div>
+<a class="btn" href="https://meet.google.com/edw-pimq-tsh" target="_blank" rel="noopener">Join me on Meet</a>
+</div>
+
+<script>
+var no=document.getElementById('no'),em=document.getElementById('em'),yes=document.getElementById('yes');
+function dodge(){
+  var w=window.innerWidth,h=window.innerHeight,bw=no.offsetWidth,bh=no.offsetHeight;
+  var y=yes.getBoundingClientRect(),x,t,tries=0;
+  do{
+    x=10+Math.random()*(w-bw-20);t=10+Math.random()*(h-bh-20);tries++;
+  }while(tries<30&&x<y.right+20&&x+bw>y.left-20&&t<y.bottom+20&&t+bh>y.top-20);
+  no.style.position='fixed';no.style.left=x+'px';no.style.top=t+'px';
+}
+function near(px,py){
+  var r=no.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+  return Math.hypot(px-cx,py-cy);
+}
+document.addEventListener('pointermove',function(e){
+  var d=near(e.clientX,e.clientY);
+  if(d<110)dodge();
+  var c=d<180;
+  em.textContent=c?'😭':'🥺';
+  em.classList.toggle('cry',c);
+});
+['pointerdown','touchstart','mouseover','focus'].forEach(function(ev){
+  no.addEventListener(ev,function(e){e.preventDefault();dodge();em.textContent='😭';em.classList.add('cry')},{passive:false});
+});
+no.addEventListener('click',function(e){e.preventDefault();dodge()});
+yes.addEventListener('click',function(){
+  document.getElementById('p1').classList.add('hide');
+  no.style.display='none';
+  document.getElementById('p2').classList.remove('hide');
+});
+</script>
+</body>
+</html>
